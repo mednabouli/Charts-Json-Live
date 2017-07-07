@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>association française with real time data</title>
+  
+  
+  
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/dataloader/dataloader.min.js"></script>
+<p class="selector">
+  <select onchange="setDataSet(this.options[this.selectedIndex].value);">
+  <option value="json/q1.json">Q #1</option>
+  <option value="json/q2.json">Q #2</option>
+  </select> &lt; Select a data set
+</p>
+<div id="chartdiv"></div>
+
+
+<script>
+var chart = AmCharts.makeChart("chartdiv", {
+  "type": "serial",
+  "dataLoader": {
+    "url": "json/q1.json"
+  },
+  "valueAxes": [{
+    "gridColor": "#FFFFFF",
+    "gridAlpha": 0.2,
+    "dashLength": 0
+  }],
+  "gridAboveGraphs": true,
+  "startDuration": 1,
+  "graphs": [{
+    "balloonText": "[[category]]: <b>[[value]]</b>",
+    "fillAlphas": 0.8,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "points"
+  }],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "Answer",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "gridAlpha": 0,
+    "tickPosition": "start",
+    "tickLength": 20
+  }
+});
+
+function setDataSet(dataset_url) {
+  AmCharts.loadFile(dataset_url, {}, function(data) {
+    chart.dataProvider = AmCharts.parseJSON(data);
+    chart.validateData();
+  });
+}
+</script>
+</body>
+</html>
